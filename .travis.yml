@@ -9,6 +9,7 @@ addons:
       - python-pygments
       
 install:
+  - go get github.com/spf13/hugo
   - rm -rf public || exit 0
 
 script:
