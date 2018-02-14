@@ -1,0 +1,23 @@
+baseURL = "http://example.org/"
+languageCode = "pl"
+title = "Jacek Lebioda - the blog"
+
+theme = "hemingway"
+copyright = "Made with <a href=\"https://gohugo.io/\">Hugo</a>, based on <a href=\"https://themes.gohugo.io/hemingway/\">Hemingway</a> theme by <a href=\"https://github.com/tanksuzuki\"><small>Asuka Suzuki</small></a>"
+
+disqusShortname = ""
+googleAnalytics = ""
+
+[params]
+
+[params.highlight]
+style = "github"
+languages = ["python", "javascript", "dockerfile"]
+
+[[params.social]]
+url = "https://github.com/jlebioda"
+fa_icon = "fa-github"
+
+# [[params.social]]
+# url = "https://twitter.com/username"
+# fa_icon = "fa-twitter"
