@@ -42,3 +42,36 @@ I got almost everything correct. To begin with, <!--more--> I followed [this tut
 
   This `.travis.yml` file feels a bit overkill (why to set-up whole _go_ environment, if all I need is just a Hugo binary?), _but it works_.
   BTW, stop for a second and think about all the resources wasted by the developers from all over the world. Which just want to use one small binary file. And they create stuffed environments to fetch the file in a convenient way, because that was the way suggested by the tutorial...
+  
+  
+  **EDIT, 2018-02-16**
+  
+  I couldn't let this wastage (of installing _go_ just to fetch _Hugo_ binary) to stay.
+  Additionally, I removed `--theme` switch from `hugo` command - it's redundant, as this information is already in the config.  
+  Therefore, my updated `.travis.yml` looks like the following:
+  
+	language: python
+	
+    addons:
+      apt:
+        packages:
+          - python-pygments
+		  
+    install:
+      - wget https://github.com/gohugoio/hugo/releases/download/v0.36.1/hugo_0.36.1_Linux-64bit.deb
+      - sudo dpkg -i hugo*.deb
+      - rm -rf public || exit 0
+
+    script:
+      - hugo
+	  
+    deploy:
+      provider: pages
+      skip_cleanup: true
+      github_token: $GITHUB_TOKEN
+      local_dir: public
+      on:
+        branch: master
+	
+  Now, it uses `wget` and `dpkg`, which are present even on `python` image in Travis. The major drawback of this approach is being bound to 0.36.1 version. To use newer version, once available, one need to update the `.travis.yml` file. On the other hand, the site builds now under 1 minute (5 times faster than using _go_!) - and that's the reason I'll stay with the _python_ version.
+  

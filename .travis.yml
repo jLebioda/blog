@@ -1,19 +1,15 @@
-language: go
-
-go:
-  - master
-
 addons:
   apt:
     packages:
       - python-pygments
       
 install:
-  - go get github.com/spf13/hugo
+  - wget https://github.com/gohugoio/hugo/releases/download/v0.36.1/hugo_0.36.1_Linux-64bit.deb
+  - sudo dpkg -i hugo*.deb
   - rm -rf public || exit 0
 
 script:
-  - hugo --theme=hemingway
+  - hugo
   
 deploy:
   provider: pages
