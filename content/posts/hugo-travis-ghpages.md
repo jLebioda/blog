@@ -75,3 +75,8 @@ I got almost everything correct. To begin with, <!--more--> I followed [this tut
 	
   Now, it uses `wget` and `dpkg`, which are present even on `python` image in Travis. The major drawback of this approach is being bound to 0.36.1 version. To use newer version, once available, one need to update the `.travis.yml` file. On the other hand, the site builds now under 1 minute (5 times faster than using _go_!) - and that's the reason I'll stay with the _python_ version.
   
+  
+   **EDIT, 2018-02-18**
+   
+   There's one pretty straighforward fix to the issue with hardcoding Hugo's URL in the `travis.yml` file - namely using environment variable. In such a scenario, the first line of `install` stage would look like: `wget $HUGO_URL` (don't forget to provide `HUGO_URL` in Travis's _envvars_ settings).
+  
