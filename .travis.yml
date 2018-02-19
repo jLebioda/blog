@@ -4,8 +4,8 @@ addons:
       - python-pygments
       
 install:
-  - wget https://github.com/gohugoio/hugo/releases/download/v0.36.1/hugo_0.36.1_Linux-64bit.deb
-  - sudo dpkg -i hugo*.deb
+  - wget $HUGO_BINARY_URL
+  - sudo dpkg -i $HUGO_BINARY_NAME_AFTER_DOWNLOAD
   - rm -rf public || exit 0
 
 script:
