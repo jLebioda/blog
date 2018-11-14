@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="pl">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Hugo, Travis and GH-pages | Jacek Lebioda - the blog</title>
+<link rel="stylesheet" href="https://jlebioda.github.io/blog/css/style.css">
+<link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/font-awesome/4.6.3/css/font-awesome.min.css">
+
+<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.6.0/styles/github.min.css">
+
+
+<section class="section">
+  <div class="container">
+    <nav class="nav">
+      <div class="nav-left">
+        <a class="nav-item" href="https://jlebioda.github.io/blog"><h1 class="title is-4">Jacek Lebioda - the blog</h1></a>
+      </div>
+      <div class="nav-right">
+        <nav class="nav-item level is-mobile">
+          
+          <a class="level-item" href="https://github.com/jlebioda">
+            <span class="icon">
+              <i class="fa fa-github"></i>
+            </span>
+          </a>
+          
+        </nav>
+      </div>
+    </nav>
+  </div>
+</section>
+
+<section class="section">
+  <div class="container">
+    <h2 class="subtitle is-6">February 14, 2018</h2>
+    <h1 class="title">Hugo, Travis and GH-pages</h1>
+    <div class="content">
+      <p>So, you want to integrate <em>Hugo</em> with <em>Travis CI</em> and <em>Github Pages</em>? And you want to have the website rebuilt every time you commit to the repository?
+You&rsquo;ve looked it up on Google, found some tutorials, but yet it does not work as intended? That was my story, too!</p>
+
+<p>I got almost everything correct. To begin with,</p>
+
+<p>I followed <a href="https://medium.com/zendesk-engineering/how-to-create-a-website-like-freshswift-net-using-hugo-travis-ci-and-github-pages-67be6f480298">this tutorial</a>, which seems to cover everything. Yet, there were some issues I struggled upon and some errors I made.</p>
+
+<ul>
+<li><p>The theme didn&rsquo;t make it to the git repository. Then, Hugo built only RSS feed.</p></li>
+
+<li><p>I&rsquo;ve cloned the theme, instead of adding it as a submodule. Look <a href="https://discourse.gohugo.io/t/adding-a-theme-as-a-submodule-or-clone/8789">here, that it&rsquo;s better to use submodule</a>.</p></li>
+
+<li><p>I&rsquo;ve been to <code>https://travis-ci.com/</code> (works with private repositories) and not to <code>https://travis-ci.org/</code> (works with public repositories). That one was funny, but actually took me around 10 minutes&hellip;</p></li>
+
+<li><p>I haven&rsquo;t set up baseURL in <code>config.toml</code>. It should be: <code>baseURL = &quot;https://jlebioda.github.io/blog&quot;</code>. Without it, all the website&rsquo;s assets just won&rsquo;t work (like stylesheets).</p></li>
+
+<li><p>The tutorial assumed, that one has <em>Hugo</em> binary in the repository - if you look closely, there&rsquo;s a reference to <code>binaries/hugo</code> in <code>.travis.yml</code> file. Initially I mistook it for <code>/binaries/hugo</code> and thought it&rsquo;s provided by Travis by default (like - <code>binaries/* == collections of common tools</code> - I cannot hide that I have never used Travis before). Then I realized, that someone just created a directory called <code>binaries</code> and put <code>hugo</code> file inside&hellip; <em>Clever, I must admit</em> - but pollutes the repository with unnecessary binary file.</p></li>
+</ul>
+
+<p>Setting it up correctly should be as easy as just downloading the Hugo package during the install step. Therefore, I followed another tutorial which suggested using:</p>
+
+<pre><code>    language: go
+
+    go:
+      - master
+
+    addons:
+      apt:
+        packages:
+          - python-pygments
+    
+    install:
+      - go get github.com/spf13/hugo
+      - rm -rf public || exit 0
+
+    script:
+      - hugo --theme=hemingway
+</code></pre>
+
+<p>This <code>.travis.yml</code> file feels a bit overkill (why to set-up whole <em>go</em> environment, if all I need is just a Hugo binary?), <em>but it works</em>.
+  BTW, stop for a second and think about all the resources wasted by the developers from all over the world. Which just want to use one small binary file. And they create stuffed environments to fetch the file in a convenient way, because that was the way suggested by the tutorial&hellip;</p>
+
+<p><strong>EDIT, 2018-02-16</strong></p>
+
+<p>I couldn&rsquo;t let this wastage (of installing <em>go</em> just to fetch <em>Hugo</em> binary) to stay.
+  Additionally, I removed <code>--theme</code> switch from <code>hugo</code> command - it&rsquo;s redundant, as this information is already in the config.<br />
+  Therefore, my updated <code>.travis.yml</code> looks like the following:</p>
+
+<pre><code>language: python
+
+addons:
+  apt:
+    packages:
+      - python-pygments
+
+install:
+  - wget https://github.com/gohugoio/hugo/releases/download/v0.36.1/hugo_0.36.1_Linux-64bit.deb
+  - sudo dpkg -i hugo*.deb
+  - rm -rf public || exit 0
+
+script:
+  - hugo
+
+deploy:
+  provider: pages
+  skip_cleanup: true
+  github_token: $GITHUB_TOKEN
+  local_dir: public
+  on:
+    branch: master
+</code></pre>
+
+<p>Now, it uses <code>wget</code> and <code>dpkg</code>, which are present even on <code>python</code> image in Travis. The major drawback of this approach is being bound to 0.36.1 version. To use newer version, once available, one need to update the <code>.travis.yml</code> file. On the other hand, the site builds now under 1 minute (5 times faster than using <em>go</em>!) - and that&rsquo;s the reason I&rsquo;ll stay with the <em>python</em> version.</p>
+
+<p><strong>EDIT, 2018-02-18</strong></p>
+
+<p>There&rsquo;s one pretty straighforward fix to the issue with hardcoding Hugo&rsquo;s URL in the <code>travis.yml</code> file - namely using environment variable. In such a scenario, the first line of <code>install</code> stage would look like: <code>wget $HUGO_URL</code> (don&rsquo;t forget to provide <code>HUGO_URL</code> in Travis&rsquo;s <em>envvars</em> settings).</p>
+    </div>
+  </div>
+</section>
+
+
+<section class="section">
+  <div class="container has-text-centered">
+    <p>Made with <a href="https://gohugo.io/">Hugo</a>, based on <a href="https://themes.gohugo.io/hemingway/">Hemingway</a> theme by <a href="https://github.com/tanksuzuki"><small>Asuka Suzuki</small></a></p>
+  </div>
+</section>
+<script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.6.0/highlight.min.js"></script>
+
+<script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.6.0/languages/python.min.js"></script>
+
+<script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.6.0/languages/javascript.min.js"></script>
+
+<script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.6.0/languages/dockerfile.min.js"></script>
+
+<script>hljs.initHighlightingOnLoad();</script>
+
+

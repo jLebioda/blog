@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Tags on Jacek Lebioda - the blog</title>
+    <link>https://jlebioda.github.io/blog/tags/</link>
+    <description>Recent content in Tags on Jacek Lebioda - the blog</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>pl</language>
+    <copyright>Made with &lt;a href=&#34;https://gohugo.io/&#34;&gt;Hugo&lt;/a&gt;, based on &lt;a href=&#34;https://themes.gohugo.io/hemingway/&#34;&gt;Hemingway&lt;/a&gt; theme by &lt;a href=&#34;https://github.com/tanksuzuki&#34;&gt;&lt;small&gt;Asuka Suzuki&lt;/small&gt;&lt;/a&gt;</copyright>
+    
+	<atom:link href="https://jlebioda.github.io/blog/tags/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+  </channel>
+</rss>

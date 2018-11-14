@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Jacek Lebioda - the blog</title>
+    <link>https://jlebioda.github.io/blog/</link>
+    <description>Recent content on Jacek Lebioda - the blog</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>pl</language>
+    <copyright>Made with &lt;a href=&#34;https://gohugo.io/&#34;&gt;Hugo&lt;/a&gt;, based on &lt;a href=&#34;https://themes.gohugo.io/hemingway/&#34;&gt;Hemingway&lt;/a&gt; theme by &lt;a href=&#34;https://github.com/tanksuzuki&#34;&gt;&lt;small&gt;Asuka Suzuki&lt;/small&gt;&lt;/a&gt;</copyright>
+    <lastBuildDate>Wed, 14 Feb 2018 16:42:11 +0100</lastBuildDate>
+    
+	<atom:link href="https://jlebioda.github.io/blog/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>Hugo, Travis and GH-pages</title>
+      <link>https://jlebioda.github.io/blog/posts/hugo-travis-ghpages/</link>
+      <pubDate>Wed, 14 Feb 2018 16:42:11 +0100</pubDate>
+      
+      <guid>https://jlebioda.github.io/blog/posts/hugo-travis-ghpages/</guid>
+      <description>&lt;p&gt;So, you want to integrate &lt;em&gt;Hugo&lt;/em&gt; with &lt;em&gt;Travis CI&lt;/em&gt; and &lt;em&gt;Github Pages&lt;/em&gt;? And you want to have the website rebuilt every time you commit to the repository?
+You&amp;rsquo;ve looked it up on Google, found some tutorials, but yet it does not work as intended? That was my story, too!&lt;/p&gt;
+
+&lt;p&gt;I got almost everything correct. To begin with,&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>Hello, World</title>
+      <link>https://jlebioda.github.io/blog/posts/hello-world/</link>
+      <pubDate>Wed, 14 Feb 2018 14:59:03 +0100</pubDate>
+      
+      <guid>https://jlebioda.github.io/blog/posts/hello-world/</guid>
+      <description>&lt;p&gt;It looks like I&amp;rsquo;ve undertaken yet another attempt to run my own blog. I am going to &lt;em&gt;try&lt;/em&gt; to chronicle interesting issues I&amp;rsquo;ll be approaching (and &lt;em&gt;hopefully&lt;/em&gt; solving) during the time I work as a programmer. Therefore:&lt;/p&gt;</description>
+    </item>
+    
+  </channel>
+</rss>
